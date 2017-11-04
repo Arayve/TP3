@@ -4,3 +4,13 @@ import sys #https://sites.google.com/site/cursodepython/modulo-sys
 nombre_de_programa=sys.argv
 
 
+from cola import Cola
+
+cadena = " ________________________________________________________________________*_____________________________*_______**___*!=____________________________________________*=------------*________*=--------*=___*=------*=--------*_*!==__________*"
+
+def sceql (cadena):
+    
+    cola = Cola()
+    
+    cola.encolar(0)
+    
