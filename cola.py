@@ -10,7 +10,7 @@ class Cola:
     
     def __init__(self):
         
-        self.primero = None
+        self.prim = None
         
         self.ultimo = None
         
