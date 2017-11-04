@@ -1,0 +1,39 @@
+[1mdiff --git a/TP3.py b/TP3.py[m
+[1mindex a9003ea..29b3dfa 100644[m
+[1m--- a/TP3.py[m
+[1m+++ b/TP3.py[m
+[36m@@ -2,3 +2,33 @@[m [mimport sys #https://sites.google.com/site/cursodepython/modulo-sys[m
+ #import argparse https://rctorr.wordpress.com/2014/01/16/procesando-parametros-en-la-linea-de-comando-en-python/ , lo vamos a usar despues para verificar[m
+ [m
+ nombre_de_programa=sys.argv[m
+[32m+[m
+[32m+[m[32mclass _Nodo:[m
+[32m+[m[41m    [m
+[32m+[m[32m    def __init__ (self, dato, prox= None):[m
+[32m+[m[41m        [m
+[32m+[m[32m        self.dato = dato[m
+[32m+[m[41m        [m
+[32m+[m[32m        self.prox = prox[m
+[32m+[m[41m        [m
+[32m+[m[32mclass Cola:[m
+[32m+[m[41m    [m
+[32m+[m[32m    def __init__(self):[m
+[32m+[m[41m        [m
+[32m+[m[32m        self.primero = None[m
+[32m+[m[41m        [m
+[32m+[m[32m        self.ultimo = None[m
+[32m+[m[41m        [m
+[32m+[m[32m    def encolar (self, dato):[m
+[32m+[m[41m        [m
+[32m+[m[32m        nodo = _Nodo(dato)[m
+[32m+[m[41m        [m
+[32m+[m[32m        if not self.prim:[m
+[32m+[m[41m            [m
+[32m+[m[32m            self.prim = nodo[m
+[32m+[m[41m            [m
+[32m+[m[32m        else:[m
+[32m+[m[41m            [m
+[32m+[m[32m            self.ultimo.prox = nodo[m
+[32m+[m[41m            [m
+[32m+[m[32m        self.ultimo = nodo[m
+\ No newline at end of file[m
