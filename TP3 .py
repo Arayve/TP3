@@ -4,3 +4,4 @@ import sys #https://sites.google.com/site/cursodepython/modulo-sys
 nombre_de_programa=sys.argv
 
 
+from cola import Cola
