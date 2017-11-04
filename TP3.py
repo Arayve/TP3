@@ -57,7 +57,7 @@ class Cola:
         
         return self.prim.dato
 
-    def sceql (self, cadena):
+    def sceql(self, cadena):
         
         if self.esta_vacia():
             
@@ -119,5 +119,6 @@ class Cola:
                 
                 aux.sceql()
             
-            
+x=Cola()
+x.sceql(cadena)      
                 

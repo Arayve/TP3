@@ -1,10 +1,3 @@
-import sys #https://sites.google.com/site/cursodepython/modulo-sys
-#import argparse https://rctorr.wordpress.com/2014/01/16/procesando-parametros-en-la-linea-de-comando-en-python/ , lo vamos a usar despues para verificar
-
-nombre_de_programa=sys.argv
-
-cadena = " ________________________________________________________________________*_____________________________*_______**___*!=____________________________________________*=------------*________*=--------*=___*=------*=--------*_*!==__________*"
-
 class _Nodo:
     
     def __init__ (self, dato, prox= None):
@@ -12,9 +5,10 @@ class _Nodo:
         self.dato = dato
         
         self.prox = prox
+            
+#-----------------------------------------------------------------------------
+class Sceql:
 
-class Cola:
-    
     def __init__(self):
         
         self.prim = None
@@ -57,23 +51,21 @@ class Cola:
         
         return self.prim.dato
 
-    def sceql (self, cadena):
-        
+    def ejecutar(self,cadena):
+        #Borre el encolar del nodo , no se por que encolas un cero al inciio
         if self.esta_vacia():
             
             self.prim = _Nodo(0)
-    
-        aux = Cola()
-    
+
         for caracter in cadena:
         
-            if caracter == "!" :
+            if caracter == "!" : 
             
                 self.encolar(0)
             
             elif caracter == "=":
             
-                byte = self.desencolar()
+                byte = self.desencolar()#si desencola algo vacio deberia hacer saltar un error especifico 
         
                 self.encolar(byte)
             
@@ -118,6 +110,8 @@ class Cola:
             elif caracter == "/":
                 
                 aux.sceql()
-            
-            
-                
+
+
+
+x=Sceql()
+x.ejecutar(" ________________________________________________________________________*_____________________________*_______**___*!=____________________________________________*=------------*________*=--------*=___*=------*=--------*_*!==__________*")
