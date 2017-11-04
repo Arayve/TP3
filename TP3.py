@@ -5,6 +5,14 @@ nombre_de_programa=sys.argv
 
 cadena = " ________________________________________________________________________*_____________________________*_______**___*!=____________________________________________*=------------*________*=--------*=___*=------*=--------*_*!==__________*"
 
+class _Nodo:
+    
+    def __init__ (self, dato, prox= None):
+        
+        self.dato = dato
+        
+        self.prox = prox
+
 class Cola:
     
     def __init__(self):
@@ -55,6 +63,8 @@ class Cola:
             
             self.prim = _Nodo(0)
     
+        aux = Cola()
+    
         for caracter in cadena:
         
             if caracter == "!" :
@@ -94,4 +104,20 @@ class Cola:
                 print(chr(dato), end="")
                 
                 self.encolar(dato)
+                
+            elif caracter == "\\":
+                
+                if self.prim.dato == 0 :
+                    
+                    while self.prim.dato != "/" :
+                        
+                        dato = self.desencolar()
+                        
+                        aux.encolar()
+                        
+            elif caracter == "/":
+                
+                aux.sceql()
+            
+            
                 
