@@ -57,7 +57,9 @@ class Sceql:
             
             self.prim = _Nodo(0)
 
-        for caracter in cadena:
+        for i in range(len(cadena)):
+            
+            caracter = cadena[i]
         
             if caracter == "!" : 
             
@@ -71,22 +73,14 @@ class Sceql:
             
             elif caracter == "-":
                 
-                dato = self.prim.dato - 1
-                
-                if dato == -1 :
-                    
-                    dato = 127
+                dato = (self.prim.dato - 1) % 128
                 
                 self.prim.dato = dato
             
             elif caracter == "_" :
                 
-                dato = self.prim.dato + 1
-                
-                if dato == 128 :
-                    
-                    dato = 1
-                    
+                dato = (self.prim.dato + 1) % 128
+
                 self.prim.dato = dato
             
             elif caracter == "*":
@@ -99,19 +93,9 @@ class Sceql:
                 
             elif caracter == "\\":
                 
-                if self.prim.dato == 0 :
-                    
-                    while self.prim.dato != "/" :
-                        
-                        dato = self.desencolar()
-                        
-                        aux.encolar()
-                        
-            elif caracter == "/":
                 
-                aux.sceql()
-
 
 
 x=Sceql()
-x.ejecutar(" ________________________________________________________________________*_____________________________*_______**___*!=____________________________________________*=------------*________*=--------*=___*=------*=--------*_*!==__________*")
+
+cadena = " ________________________________________________________________________*_____________________________*_______**___*!=____________________________________________*=------------*________*=--------*=___*=------*=--------*_*!==__________*"
