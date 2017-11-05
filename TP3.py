@@ -81,9 +81,7 @@ class Cola:
                 
                 dato = self.prim.dato - 1
                 
-                if dato == -1 :
-                    
-                    dato = 127
+                dato = dato % 128
                 
                 self.prim.dato = dato
             
@@ -91,9 +89,7 @@ class Cola:
                 
                 dato = self.prim.dato + 1
                 
-                if dato == 128 :
-                    
-                    dato = 1
+                dato = dato % 128
                     
                 self.prim.dato = dato
             
