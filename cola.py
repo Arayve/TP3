@@ -49,3 +49,7 @@ class Cola:
             raise ValueError()
         
         return self.prim.dato
+    
+    def cambiar_primero(self,valor):
+        
+        self.prim.dato = valor
