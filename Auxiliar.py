@@ -1,5 +1,7 @@
 from cola import Cola
 
+import argparse
+
 def sceql(cadena):
 
     camino_1 = {}
@@ -26,20 +28,28 @@ def sceql(cadena):
     
     return camino_1, camino_2
             
-def recorrer(cadena):
+def recorrer(cadena, modo_debug):
     
     camino_1, camino_2 = sceql(cadena)
-    
-    archivo = open("archivo.txt", "w")
     
     cola = Cola()
     
     cola.encolar(0)
     
     i = 0
-    lista = []
+
+    mensaje = ""
+
     while i < len(cadena):
-        
+
+        if modo_debug :
+
+            print(mensaje)
+
+            print(cadena[i:i+60])
+
+            input("^")
+
         caracter = cadena[i]
         
 
@@ -61,7 +71,7 @@ def recorrer(cadena):
                 
             dato = cola.ver_tope() - 1
             
-            dato = dato % 128
+            dato = dato % 256
             
             cola.cambiar_primero(dato)
             
@@ -71,7 +81,7 @@ def recorrer(cadena):
                 
             dato = cola.ver_tope() + 1
                 
-            dato = dato % 128
+            dato = dato % 256
             
             cola.cambiar_primero(dato)
             
@@ -83,7 +93,9 @@ def recorrer(cadena):
             
             letra = chr(dato)  
             
-            archivo.write(letra)
+            mensaje += letra
+
+            print(letra, end = "")
                 
             cola.encolar(dato)
             
@@ -107,13 +119,23 @@ def recorrer(cadena):
             
             i += 1
             
-    archivo.close
-    
 def main():
     
+    parser = argparse.ArgumentParser(description='Interprete de codigo SCEQL')
+
+    parser.add_argument('archivo', metavar='archivo', help='archivo con codigo a interpretar')
+
+    parser.add_argument('-d', '--debug', action='store_true', help='modo debug')
+
+    args = parser.parse_args()
+
+    nombre_archivo = args.archivo
+
+    modo_debug = args.debug
+
     cadena = []
     
-    with open("botellas.py") as archivo :
+    with open(nombre_archivo) as archivo :
         
         for linea in archivo:
             
@@ -123,6 +145,6 @@ def main():
             
     cadena = "".join(cadena)
     
-    recorrer(cadena)
+    recorrer(cadena, modo_debug)
     
-main()
+main() 
