@@ -2,6 +2,25 @@ from cola import Cola
 
 import argparse
 
+def debug(cadena, i):
+
+    long = len(cadena)
+
+    if i < 100:
+
+        print(cadena[0:100])
+
+        print(" " * i  + "^")
+
+    else:
+
+        rango = (i // 100)  * 100
+
+        print(cadena[rango:(rango +100)])
+
+        print(" " * ((i-1)  % 100) + "^")
+
+
 def sceql(cadena):
 
     camino_1 = {}
@@ -12,13 +31,13 @@ def sceql(cadena):
     
     for i in range(len(cadena)):
         
-        c = cadena[i]
+        caracter = cadena[i]
     
-        if c == "\\":
+        if caracter == "\\":
 
             barras.append(i)
 
-        elif c == "/":
+        elif caracter == "/":
 
             ultima_barra = barras.pop()
             
@@ -29,6 +48,10 @@ def sceql(cadena):
     return camino_1, camino_2
             
 def recorrer(cadena, modo_debug):
+
+    if cadena.count("\\") != cadena.count("/"):
+
+        print("Error. Deben haber igual cantidad de '\\' que "/". ")
     
     camino_1, camino_2 = sceql(cadena)
     
@@ -41,14 +64,14 @@ def recorrer(cadena, modo_debug):
     mensaje = ""
 
     while i < len(cadena):
-
+        
         if modo_debug :
 
             print(mensaje)
 
-            print(cadena[i:i+60])
+            debug(cadena, i)
 
-            input("^")
+            input()
 
         caracter = cadena[i]
         
