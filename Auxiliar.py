@@ -4,24 +4,26 @@ import argparse
 
 def debug(cadena, i):
 
-    long = len(cadena)
+    '''Recibe la cadena y el indice a evaluar.
+       Imprime en pantalla un rango de 100 
+       caracteres de la cadena y una flecha 
+       en el caracter a evaluar'''
 
-    if i < 100:
+    rango = (i // 100)  * 100
 
-        print(cadena[0:100])
+    print(cadena[rango:(rango +100)])
 
-        print(" " * i  + "^")
+    print(" " * (i  % 100) + "^")
 
-    else:
-
-        rango = (i // 100)  * 100
-
-        print(cadena[rango:(rango +100)])
-
-        print(" " * ((i-1)  % 100) + "^")
 
 
 def sceql(cadena):
+
+    '''Recibe en forma de cadena el codigo fuente
+       de un programa/funcion en lenguaje SCEQL y
+       devuelve dos diccionarios. uno con la posicion
+       de la "\" como clave y la posicion de "/" 
+       correspondiente como valor y el otro inverso.'''
 
     camino_1 = {}
     
@@ -47,11 +49,19 @@ def sceql(cadena):
     
     return camino_1, camino_2
             
+
+
 def recorrer(cadena, modo_debug):
+
+    '''Recibe en forma de cadena el codigo fuente
+       de un programa/funcion en lenguaje SCEQL y
+       lo interpreta.
+       De no haber "\" y "/" en iguales cantidades,
+       levanta error '''
 
     if cadena.count("\\") != cadena.count("/"):
 
-        print("Error. Deben haber igual cantidad de '\\' que "/". ")
+        raise ValueError()
     
     camino_1, camino_2 = sceql(cadena)
     
@@ -141,8 +151,18 @@ def recorrer(cadena, modo_debug):
         else:
             
             i += 1
+
+
             
 def main():
+
+    '''funcion principal, recibe por parametro
+       el nombre del archivo sceql, lo abre y 
+       lo guarda en una cadena.
+       Acepta el modo DEBUG "-d" o "--debug", 
+       en ese caso, imprime en pantalla un fragmento 
+       del codigo fuente con una flecha en el caracter
+       a evaluar '''
     
     parser = argparse.ArgumentParser(description='Interprete de codigo SCEQL')
 
@@ -158,16 +178,26 @@ def main():
 
     cadena = []
     
-    with open(nombre_archivo) as archivo :
+    try:
+
+        with open(nombre_archivo) as archivo :
         
-        for linea in archivo:
+            for linea in archivo:
             
-            linea = linea.rstrip("\n")
+                linea = linea.rstrip("\n")
         
-            cadena.append(linea)
+                cadena.append(linea)
             
-    cadena = "".join(cadena)
-    
-    recorrer(cadena, modo_debug)
+        cadena = "".join(cadena)
+
+        recorrer(cadena, modo_debug)
+
+    except ValueError:
+
+        print("Error. Deben haber igual cantidad de '\\' que '/'.")
+
+    except IOError:
+
+        print("No se encuentra o no se permite abrir el archivo.")
     
 main() 
