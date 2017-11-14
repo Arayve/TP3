@@ -5,3 +5,39 @@ Curso: Wachenchauzer
 Alumnos-Padrón: Arturo Alejandro Yep Vela -  101554
 	 Alexis
 Ayudante a cargo: Rodrigo Vélez
+
+
+
+
+Diseño del programa:
+
+
+Importación de clases y funciones:	
+•	Importaremos la clase Pila y Cola.
+También importaremos la función argparse, la cual nos permitirá saber el nombre de nuestro argumento. En nuestro el archivo SCEQL que vamos a "ejecutar".
+
+
+
+Funciones auxiliar:
+•	Crearemos la función llamada debug, la cual recibirá una cadena y un entero. Imprimirá en pantalla un rango de 100  caracteres de la cadena y una flecha en el carácter a evaluar. Será el número entero el que nos permita saber a qué rango de la cadena debemos imprimir la flecha.
+•	Crearemos la función scqel, la cual recibirá en forma de cadena el código fuente de un programa/función en lenguaje SCEQL.
+Crearemos dos diccionarios y una pila.
+Recorremos la cadena  en busca de los caracteres “\" y "/". Cada vez que encontremos “\"  guardaremos la posición  en un pila.
+
+Cuando encontremos el carácter “/”, entonces desapilaremos la pila. En el primer diccionario  guardaremos la posición de la "\" como clave y la posición de "/"  correspondiente como valor y el otro diccionario exactamente lo mismo,pero inverso. Esta función devolverá los dos diccionarios.
+Es necesario que devuelva dos diccionario, debido a la relacion que tiene estos dos.Cuando interpretemos el codigo y se ejecute  "\" o "/" deberemos"saltar", es decir que en cada diccionarion(como son dos comando) guardaremos la posicion a la cual debe saltar cada comando.  
+
+ 
+•	 Crearemos la función recorrer, recibirá en forma de cadena el código fuente del programa y lo interpreta.Tambien recibe la cadena modo debug para saber , si debemos activarlo dicho modo.
+Creamos una cola, llamaremos a la función scqel, recibiremos los dos diccionarios.
+La manera en la cual interpretara el código será atreves de un while que recorrerá la cadena a traves de una variable que representara la posición de la cadena, en cada instancia cada elemento pasara por una secuencia if, será esta secuencia la que identificara si el carácter es un comando del lenguaje SCEQL. Si lo es, se realizara su correspondiente acción.cabe aclarar que para los comando "\" o "/" usaremos los diccionarios consegui 
+anteriormente en la llamada de la funcion scqel.
+		Errores atrapados : 
+			De no haber "\" y "/" en iguales cantidades,levanta error.
+
+Estrucuta de main:
+	Utilizaremos la funcion anteriormente importada argparse , para saber el nombre de archivo que vamos a ejecutar , y si debemos activar el modo debug
+	Crearemos una cadena.
+	Abriremos el archivo,y guardaremos todo el codigo dentro de la cadena. Cabe aclarar que abrimos el archivo dentro de un Try, tal que si no existe ese archivo levanta un Error.
+	Despues llamaremos a la funcion recorrer.
+
