@@ -1,4 +1,5 @@
 from cola import Cola
+from pila import Pila
 
 import argparse
 
@@ -29,7 +30,7 @@ def sceql(cadena):
     
     camino_2 = {}
     
-    barras = []
+    barras = Pila()
     
     for i in range(len(cadena)):
         
@@ -37,11 +38,11 @@ def sceql(cadena):
     
         if caracter == "\\":
 
-            barras.append(i)
+            barras.apilar(i)
 
         elif caracter == "/":
 
-            ultima_barra = barras.pop()
+            ultima_barra = barras.desapilar()
             
             camino_1[ultima_barra] = i
             

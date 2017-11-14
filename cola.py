@@ -42,7 +42,7 @@ class Cola:
         
         return self.prim is None
     
-    def ver_primero(self):
+    def ver_tope(self):
         
         if not self.prim:
             
