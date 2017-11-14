@@ -22,7 +22,7 @@ def sceql(cadena):
 
     '''Recibe en forma de cadena el codigo fuente
        de un programa/funcion en lenguaje SCEQL y
-       devuelve dos diccionarios. uno con la posicion
+       devuelve dos diccionarios. Uno con la posicion
        de la "\" como clave y la posicion de "/" 
        correspondiente como valor y el otro inverso.'''
 
@@ -195,7 +195,7 @@ def main():
 
     except ValueError:
 
-        print("Error. Deben haber igual cantidad de '\\' que '/'.")
+        print("Error. Deben haber igual cantidad de '\\' que '/'.")#POR QUE ATRAPAS EL MISMO ERROR DOS VECES ??
 
     except IOError:
 
