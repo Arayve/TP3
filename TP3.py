@@ -1,120 +1,205 @@
-import sys #https://sites.google.com/site/cursodepython/modulo-sys
-#import argparse https://rctorr.wordpress.com/2014/01/16/procesando-parametros-en-la-linea-de-comando-en-python/ , lo vamos a usar despues para verificar
+from cola import Cola
 
-nombre_de_programa=sys.argv
+from pila import Pila
 
-cadena = " ________________________________________________________________________*_____________________________*_______**___*!=____________________________________________*=------------*________*=--------*=___*=------*=--------*_*!==__________*"
+import argparse
 
-class _Nodo:
+def debug(cadena, i):
+
+    '''Recibe la cadena y el indice a evaluar.
+       Imprime en pantalla un rango de 100 
+       caracteres de la cadena y una flecha 
+       en el caracter a evaluar'''
+
+    rango = (i // 100)  * 100
+
+    print(cadena[rango:(rango +100)])
+
+    print(" " * (i  % 100) + "^")
+
+
+
+def sceql(cadena):
+
+    '''Recibe en forma de cadena el codigo fuente
+       de un programa/funcion en lenguaje SCEQL y
+       devuelve dos diccionarios. Uno con la posicion
+       de la "\" como clave y la posicion de "/" 
+       correspondiente como valor y el otro inverso.'''
+
+    camino_1 = {}
     
-    def __init__ (self, dato, prox= None):
-        
-        self.dato = dato
-        
-        self.prox = prox
-
-class Cola:
+    camino_2 = {}
     
-    def __init__(self):
+    barras = Pila()
+    
+    for i in range(len(cadena)):
         
-        self.prim = None
-        
-        self.ultimo = None
-        
-    def encolar (self, dato):
-        
-        nodo = _Nodo(dato)
-        
-        if not self.prim:
+        caracter = cadena[i]
+    
+        if caracter == "\\":
+
+            barras.apilar(i)
+
+        elif caracter == "/":
+
+            ultima_barra = barras.desapilar()
             
-            self.prim = nodo
+            camino_1[ultima_barra] = i
+            
+            camino_2[i] = ultima_barra
+
+    if not barras.esta_vacia():
+
+        raise ValueError()
+    
+    return camino_1, camino_2
+            
+
+
+def recorrer(cadena, modo_debug):
+
+    '''Recibe en forma de cadena el codigo fuente
+       de un programa/funcion en lenguaje SCEQL y
+       lo interpreta.
+       De no haber "\" y "/" en iguales cantidades,
+       levanta error '''
+    
+    camino_1, camino_2 = sceql(cadena)
+    
+    cola = Cola()
+    
+    cola.encolar(0)
+    
+    i = 0
+
+    mensaje = ""
+
+    while i < len(cadena):
+        
+        if modo_debug :
+
+            print()
+
+            print(mensaje)
+
+            debug(cadena, i)
+
+            input()
+
+        caracter = cadena[i]
+        
+
+        if caracter == "!" : 
+
+            cola.encolar(0)
+            
+            i += 1
+            
+        elif caracter == "=":
+
+            dato = cola.desencolar()
+
+            cola.encolar(dato)
+        
+            i += 1
+            
+        elif caracter == "-":
+                
+            dato = cola.ver_tope() - 1
+            
+            dato = dato % 256
+            
+            cola.cambiar_primero(dato)
+            
+            i += 1
+            
+        elif caracter == "_" :
+                
+            dato = cola.ver_tope() + 1
+                
+            dato = dato % 256
+            
+            cola.cambiar_primero(dato)
+            
+            i += 1
+            
+        elif caracter == "*" :
+
+            dato = cola.desencolar()
+            
+            letra = chr(dato)  
+            
+            mensaje += letra
+
+            print(letra, end = "")
+                
+            cola.encolar(dato)
+            
+            i += 1
+                
+        elif caracter == "/":
+            
+            i = camino_2[i]
+             
+        elif caracter == "\\":
+            
+            i = i +1 if cola.ver_tope() != 0 else camino_1[i] + 1
             
         else:
             
-            self.ultimo.prox = nodo
-            
-        self.ultimo = nodo
-        
-    def desencolar (self):
-        
-        nodo = self.prim
-        
-        dato = nodo.dato
-        
-        self.prim = nodo.prox
-        
-        return dato
-    
-    def esta_vacia (self):
-        
-        return self.prim is None
-    
-    def ver_primero(self):
-        
-        if not self.prim:
-            
-            raise ValueError()
-        
-        return self.prim.dato
+            i += 1
 
-    def sceql(self, cadena):
-        
-        if self.esta_vacia():
+
             
-            self.prim = _Nodo(0)
+def main():
+
+    '''funcion principal, recibe por parametro
+       el nombre del archivo sceql, lo abre y 
+       lo guarda en una cadena.
+       Acepta el modo DEBUG "-d" o "--debug", 
+       en ese caso, imprime en pantalla un fragmento 
+       del codigo fuente con una flecha en el caracter
+       a evaluar '''
     
-        aux = Cola()
+    parser = argparse.ArgumentParser(description='Interprete de codigo SCEQL')
+
+    parser.add_argument('archivo', metavar='archivo', help='archivo con codigo a interpretar')
+
+    parser.add_argument('-d', '--debug', action='store_true', help='modo debug')
+
+    args = parser.parse_args()
+
+    nombre_archivo = args.archivo
+
+    modo_debug = args.debug
+
+    cadena = []
     
-        for caracter in cadena:
+    try:
+
+        with open(nombre_archivo) as archivo :
         
-            if caracter == "!" :
+            for linea in archivo:
             
-                self.encolar(0)
-            
-            elif caracter == "=":
-            
-                byte = self.desencolar()
+                linea = linea.rstrip("\n")
         
-                self.encolar(byte)
+                cadena.append(linea)
             
-            elif caracter == "-":
-                
-                dato = self.prim.dato - 1
-                
-                dato = dato % 128
-                
-                self.prim.dato = dato
-            
-            elif caracter == "_" :
-                
-                dato = self.prim.dato + 1
-                
-                dato = dato % 128
-                    
-                self.prim.dato = dato
-            
-            elif caracter == "*":
-                
-                dato = self.desencolar()
-              
-                print(chr(dato), end="")
-                
-                self.encolar(dato)
-                
-            elif caracter == "\\":
-                
-                if self.prim.dato == 0 :
-                    
-                    while self.prim.dato != "/" :
-                        
-                        dato = self.desencolar()
-                        
-                        aux.encolar()
-                        
-            elif caracter == "/":
-                
-                aux.sceql()
-            
-x=Cola()
-x.sceql(cadena)      
-                
+        cadena = "".join(cadena)
+
+        recorrer(cadena, modo_debug)
+
+    except ValueError:
+
+        print("Error. Deben haber igual cantidad de '\\' que '/'.")
+
+    except IndexError:
+
+        print("Error. Deben haber igual cantidad de '\\' que '/'.")
+
+    except IOError:
+
+        print("No se encuentra o no se permite abrir el archivo.")
+    
+main() 

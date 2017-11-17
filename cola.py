@@ -1,20 +1,32 @@
 class _Nodo:
+
+    """Representa un nodo"""
     
     def __init__ (self, dato, prox= None):
+
+        """Crea un nodo, con el dato y, si se
+        desea, con el nodo siguiente"""
         
         self.dato = dato
         
         self.prox = prox
         
 class Cola:
+
+    """Representa la clase cola, con metodos para
+    encolar, desencolar, esta_vacia y cambiar_prmero"""
     
     def __init__(self):
+
+        """Crea una cola vacia"""
         
         self.prim = None
         
         self.ultimo = None
         
     def encolar (self, dato):
+
+        """Encola un elemento"""
         
         nodo = _Nodo(dato)
         
@@ -29,6 +41,13 @@ class Cola:
         self.ultimo = nodo
         
     def desencolar (self):
+
+        """Desencola el primer elemento.
+        Si esta vacia levanta ValueError"""
+
+        if self.esta_vacia():
+
+            raise ValueError()
         
         nodo = self.prim
         
@@ -39,10 +58,16 @@ class Cola:
         return dato
     
     def esta_vacia (self):
+
+        """ Devuelve True si la cola esta vacia.
+        False si no."""
         
         return self.prim is None
     
     def ver_tope(self):
+
+        """Devuelve el primer dato de la cola.
+        Si esta vacia levanta ValueError. """
         
         if not self.prim:
             
@@ -51,5 +76,13 @@ class Cola:
         return self.prim.dato
     
     def cambiar_primero(self,valor):
+
+        """Permite cambiar el primer elemento de
+        la cola sin afectar el orden.
+        levanta ValueError si esta vacia"""
+
+        if self.esta_vacia():
+
+            raise ValueError()
         
         self.prim.dato = valor
