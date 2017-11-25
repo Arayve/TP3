@@ -4,6 +4,8 @@ from pila import Pila
 
 import argparse
 
+LIMITE_DE_BYTE = 256
+
 def debug(cadena, i):
 
     '''Recibe la cadena y el indice a evaluar.
@@ -19,7 +21,7 @@ def debug(cadena, i):
 
 
 
-def sceql(cadena):
+def obt_pos_barras(cadena):
 
     '''Recibe en forma de cadena el codigo fuente
        de un programa/funcion en lenguaje SCEQL y
@@ -57,7 +59,7 @@ def sceql(cadena):
             
 
 
-def recorrer(cadena, modo_debug):
+def ejecutar(cadena, modo_debug):
 
     '''Recibe en forma de cadena el codigo fuente
        de un programa/funcion en lenguaje SCEQL y
@@ -65,7 +67,7 @@ def recorrer(cadena, modo_debug):
        De no haber "\" y "/" en iguales cantidades,
        levanta error '''
     
-    camino_1, camino_2 = sceql(cadena)
+    camino_1, camino_2 = obt_pos_barras(cadena)
     
     cola = Cola()
     
@@ -108,7 +110,7 @@ def recorrer(cadena, modo_debug):
                 
             dato = cola.ver_tope() - 1
             
-            dato = dato % 256
+            dato = dato % LIMITE_DE_BYTE
             
             cola.cambiar_primero(dato)
             
@@ -118,7 +120,7 @@ def recorrer(cadena, modo_debug):
                 
             dato = cola.ver_tope() + 1
                 
-            dato = dato % 256
+            dato = dato % LIMITE_DE_BYTE
             
             cola.cambiar_primero(dato)
             
@@ -188,7 +190,7 @@ def main():
             
         cadena = "".join(cadena)
 
-        recorrer(cadena, modo_debug)
+        ejecutar(cadena, modo_debug)
 
     except ValueError:
 
