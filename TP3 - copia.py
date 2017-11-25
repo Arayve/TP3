@@ -56,6 +56,8 @@ def sceql(cadena):
         raise ValueError()
     
     return camino_1, camino_2
+            
+
 
 def recorrer(cadena, modo_debug):
 
@@ -89,8 +91,66 @@ def recorrer(cadena, modo_debug):
 
         caracter = cadena[i]
         
-        funcion_de_comando=comandos.get(caracter,funcion_de_comando_no_existente)
-        i,mensaje=funcion_de_comando(cola,i,mensaje,camino_1,camino_2)
+
+        if caracter == "!" : 
+
+            cola.encolar(0)
+            
+            i += 1
+            
+        elif caracter == "=":
+
+            dato = cola.desencolar()
+
+            cola.encolar(dato)
+        
+            i += 1
+            
+        elif caracter == "-":
+                
+            dato = cola.ver_frente() - 1
+            
+            dato = dato % 256
+            
+            cola.cambiar_primero(dato)
+            
+            i += 1
+            
+        elif caracter == "_" :
+                
+            dato = cola.ver_frente() + 1
+                
+            dato = dato % 256
+            
+            cola.cambiar_primero(dato)
+            
+            i += 1
+            
+        elif caracter == "*" :
+
+            dato = cola.desencolar()
+            
+            letra = chr(dato)  
+            
+            mensaje += letra
+
+            print(letra, end = "")
+                
+            cola.encolar(dato)
+            
+            i += 1
+                
+        elif caracter == "/":
+            
+            i = camino_2[i]
+             
+        elif caracter == "\\":
+            
+            i = i +1 if cola.ver_frente() != 0 else camino_1[i] + 1
+            
+        else:
+            
+            i += 1
 
 
             
