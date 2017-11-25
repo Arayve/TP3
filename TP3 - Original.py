@@ -6,8 +6,6 @@ from dic_comando import *
 
 import argparse
 
-LIMITE_DE_BYTE = 256
-
 def debug(cadena, i):
 
     '''Recibe la cadena y el indice a evaluar.
@@ -23,7 +21,7 @@ def debug(cadena, i):
 
 
 
-def obt_pos_barras(cadena):
+def sceql(cadena):
 
     '''Recibe en forma de cadena el codigo fuente
        de un programa/funcion en lenguaje SCEQL y
@@ -58,8 +56,10 @@ def obt_pos_barras(cadena):
         raise ValueError()
     
     return camino_1, camino_2
+            
 
-def ejecutar(cadena, modo_debug):
+
+def recorrer(cadena, modo_debug):
 
     '''Recibe en forma de cadena el codigo fuente
        de un programa/funcion en lenguaje SCEQL y
@@ -67,7 +67,7 @@ def ejecutar(cadena, modo_debug):
        De no haber "\" y "/" en iguales cantidades,
        levanta error '''
     
-    camino_1, camino_2 = obt_pos_barras(cadena)
+    camino_1, camino_2 = sceql(cadena)
     
     cola = Cola()
     
@@ -90,6 +90,7 @@ def ejecutar(cadena, modo_debug):
             input()
 
         caracter = cadena[i]
+        
 
         if caracter == "!" : 
 
@@ -107,9 +108,9 @@ def ejecutar(cadena, modo_debug):
             
         elif caracter == "-":
                 
-            dato = cola.ver_primero() - 1
+            dato = cola.ver_frente() - 1
             
-            dato = dato % LIMITE_DE_BYTE
+            dato = dato % 256
             
             cola.cambiar_primero(dato)
             
@@ -117,9 +118,9 @@ def ejecutar(cadena, modo_debug):
             
         elif caracter == "_" :
                 
-            dato = cola.ver_primero() + 1
+            dato = cola.ver_frente() + 1
                 
-            dato = dato % LIMITE_DE_BYTE
+            dato = dato % 256
             
             cola.cambiar_primero(dato)
             
@@ -145,11 +146,13 @@ def ejecutar(cadena, modo_debug):
              
         elif caracter == "\\":
             
-            i = i +1 if cola.ver_tope() != 0 else camino_1[i] + 1
+            i = i +1 if cola.ver_frente() != 0 else camino_1[i] + 1
             
         else:
             
             i += 1
+
+
             
 def main():
 
@@ -187,7 +190,7 @@ def main():
             
         cadena = "".join(cadena)
 
-        ejecutar(cadena, modo_debug)
+        recorrer(cadena, modo_debug)
 
     except ValueError:
 
