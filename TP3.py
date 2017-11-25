@@ -106,7 +106,7 @@ def recorrer(cadena, modo_debug):
             
         elif caracter == "-":
                 
-            dato = cola.ver_tope() - 1
+            dato = cola.ver_frente() - 1
             
             dato = dato % 256
             
@@ -116,7 +116,7 @@ def recorrer(cadena, modo_debug):
             
         elif caracter == "_" :
                 
-            dato = cola.ver_tope() + 1
+            dato = cola.ver_frente() + 1
                 
             dato = dato % 256
             
@@ -144,7 +144,7 @@ def recorrer(cadena, modo_debug):
              
         elif caracter == "\\":
             
-            i = i +1 if cola.ver_tope() != 0 else camino_1[i] + 1
+            i = i +1 if cola.ver_frente() != 0 else camino_1[i] + 1
             
         else:
             

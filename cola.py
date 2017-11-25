@@ -64,7 +64,7 @@ class Cola:
         
         return self.prim is None
     
-    def ver_tope(self):
+    def ver_frente(self):
 
         """Devuelve el primer dato de la cola.
         Si esta vacia levanta ValueError. """
