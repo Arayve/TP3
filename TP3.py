@@ -2,8 +2,6 @@ from cola import Cola
 
 from pila import Pila
 
-from dic_comando import *
-
 import argparse
 
 LIMITE_DE_BYTE = 256

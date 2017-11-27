@@ -86,3 +86,12 @@ class Cola:
             raise ValueError()
         
         self.prim.dato = valor
+
+    def imprimir_cola(self):
+        resultado=[]
+        actual=self.prim
+        while not actual is None:
+            resultado.append(actual.dato)
+            actual=actual.prox
+        print(resultado)
+

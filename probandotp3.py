@@ -1,10 +1,12 @@
+from Comandos import dic_funciones
+
 from cola import Cola
 
 from pila import Pila
 
 import argparse
 
-LIMITE_DE_BYTE = 256
+
 
 def obt_pos_barras(cadena):
 
@@ -44,8 +46,7 @@ def obt_pos_barras(cadena):
             
 
 
-def debug(cadena, i, mensaje):
-
+def debug(cadena, i, mensaje,cola):
     '''Recibe la cadena y el indice a evaluar.
        Imprime en pantalla un rango de 100 
        caracteres de la cadena y una flecha 
@@ -53,6 +54,7 @@ def debug(cadena, i, mensaje):
 
     print()
 
+    cola.imprimir_cola()
     print(mensaje)
 
     rango = (i // 100)  * 100
@@ -79,7 +81,6 @@ def ejecutar(cadena, modo_debug):
 
     mensaje = ""
 
-    funciones = {"\\" : _barras, "/" : _barras ,"!" : _igual_admiracion, "=" : _igual_admiracion, "-" : _guiones , "_" : _guiones, "*" : _asterisco}
 
     i = 0
 
@@ -87,91 +88,17 @@ def ejecutar(cadena, modo_debug):
 
         if modo_debug:
             
-            debug(cadena, i, mensaje)
+            debug(cadena, i, mensaje,cola)
 
-        if not cadena[i] in funciones:
+        if not cadena[i] in dic_funciones:
 
             i += 1
 
             continue
 
-        i, mensaje = funciones[cadena[i]](cadena[i], i, cola ,camino_1 , camino_2 , mensaje)
+        i, mensaje = dic_funciones[cadena[i]](cadena[i], i, cola ,camino_1 , camino_2 , mensaje)
 
-def _barras(elemento, i, cola, camino_1, camino_2 , mensaje):
 
-    '''Recibe un elemento, una posicion, una cola,
-    dos diccionarios y un mensaje.
-    dependiendo de las condiciones de la cola, modifica
-    la posiciom
-    '''
-
-    if elemento == "\\":
-
-        if cola.ver_primero() == 0 :
-
-            return camino_1[i] +1, mensaje
-
-        return i + 1, mensaje
-
-    return camino_2[i], mensaje
-
-def _igual_admiracion(elemento, i, cola, camino_1, camino_2 , mensaje):
-
-    '''Recibe un elemento, una posicion, una cola,
-    dos diccionarios y un mensaje.
-    Dependiendo del elemento, modifica la cola
-    '''
-
-    if elemento == "!" : 
-
-        cola.encolar(0)
-            
-    elif elemento == "=":
-
-        dato = cola.desencolar()
-
-        cola.encolar(dato)
-
-    return i + 1, mensaje
-
-def _guiones(elemento, i, cola, camino_1, camino_2 , mensaje):
-
-    '''Recibe un elemento, una posicion, una cola,
-    dos diccionarios y un mensaje.
-    deependiendo del elemento, modifica la cola
-    '''
-
-    dato = cola.ver_primero()
-
-    dato = dato -1 if elemento == "-" else dato +1 
-                
-    dato = dato % LIMITE_DE_BYTE
-
-    cola.cambiar_primero(dato)
-
-    return i + 1, mensaje
-
-def _asterisco(elemento, i, cola, camino_1, camino_2 , mensaje):
-    
-    '''Recibe un elemento, una posicion, una cola,
-    dos diccionarios y un mensaje.
-    Imprime en pantalla el primer elemento de la cola
-    paso usando la tabla ASCII
-    '''
-
-    dato = cola.desencolar()
-
-    letra = chr(dato)
-
-    mensaje += letra
-
-    print(letra, end = "")
-                
-    cola.encolar(dato)
-            
-    return i + 1, mensaje
-
-            
 def main():
 
     '''funcion principal, recibe por parametro
