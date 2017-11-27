@@ -1,23 +1,10 @@
+from Comandos import DIC_FUNCIONES
+
 from cola import Cola
 
 from pila import Pila
 
 import argparse
-
-LIMITE_DE_BYTE = 256
-
-def debug(cadena, i):
-
-    '''Recibe la cadena y el indice a evaluar.
-       Imprime en pantalla un rango de 100 
-       caracteres de la cadena y una flecha 
-       en el caracter a evaluar'''
-
-    rango = (i // 100)  * 100
-
-    print(cadena[rango:(rango +100)])
-
-    print(" " * (i  % 100) + "^")
 
 
 
@@ -56,99 +43,62 @@ def obt_pos_barras(cadena):
         raise ValueError()
     
     return camino_1, camino_2
+            
+
+def debug(cadena, i, mensaje,cola):
+    '''Recibe la cadena y el indice a evaluar.
+       Imprime en pantalla un rango de 100 
+       caracteres de la cadena y una flecha 
+       en el caracter a evaluar'''
+
+    print()
+
+    cola.imprimir_cola()
+    
+    print(mensaje)
+
+    rango = (i // 100)  * 100
+
+    print(cadena[rango:(rango +100)])
+
+    print(" " * (i  % 100) + "^")
+
+    input()
 
 def ejecutar(cadena, modo_debug):
 
     '''Recibe en forma de cadena el codigo fuente
        de un programa/funcion en lenguaje SCEQL y
-       lo interpreta.
-       De no haber "\" y "/" en iguales cantidades,
-       levanta error '''
-    
-    camino_1, camino_2 = obt_pos_barras(cadena)
-    
-    cola = Cola()
-    
-    cola.encolar(0)
-    
-    i = 0
+       lo interpreta.'''
 
     mensaje = ""
 
+    camino_1, camino_2 = obt_pos_barras(cadena)
+
+    cola = Cola()
+
+    cola.encolar(0)
+
+    mensaje = ""
+
+
+    i = 0
+
     while i < len(cadena):
-        
-        if modo_debug :
 
-            print()
-
-            print(mensaje)
-
-            debug(cadena, i)
-
-            input()
-
-        caracter = cadena[i]
-
-        if caracter == "!" : 
-
-            cola.encolar(0)
+        if modo_debug:
             
+            debug(cadena, i, mensaje,cola)
+
+        if not cadena[i] in DIC_FUNCIONES:
+
             i += 1
-            
-        elif caracter == "=":
 
-            dato = cola.desencolar()
+            continue
 
-            cola.encolar(dato)
-        
-            i += 1
-            
-        elif caracter == "-":
-                
-            dato = cola.ver_primero() - 1
-            
-            dato = dato % LIMITE_DE_BYTE
-            
-            cola.cambiar_primero(dato)
-            
-            i += 1
-            
-        elif caracter == "_" :
-                
-            dato = cola.ver_primero() + 1
-                
-            dato = dato % LIMITE_DE_BYTE
-            
-            cola.cambiar_primero(dato)
-            
-            i += 1
-            
-        elif caracter == "*" :
+        i, mensaje = DIC_FUNCIONES[cadena[i]](cadena[i], i, cola ,camino_1 , camino_2 , mensaje)
 
-            dato = cola.desencolar()
-            
-            letra = chr(dato)  
-            
-            mensaje += letra
 
-            print(letra, end = "")
-                
-            cola.encolar(dato)
-            
-            i += 1
-                
-        elif caracter == "/":
-            
-            i = camino_2[i]
-             
-        elif caracter == "\\":
-            
-            i = i +1 if cola.ver_tope() != 0 else camino_1[i] + 1
-            
-        else:
-            
-            i += 1
-            
 def main():
 
     '''funcion principal, recibe por parametro
@@ -187,6 +137,10 @@ def main():
 
         ejecutar(cadena, modo_debug)
 
+    except IOError:
+
+        print("No se encuentra o no se permite abrir el archivo.")
+
     except ValueError:
 
         print("Error. Deben haber igual cantidad de '\\' que '/'.")
@@ -194,9 +148,5 @@ def main():
     except IndexError:
 
         print("Error. Deben haber igual cantidad de '\\' que '/'.")
-
-    except IOError:
-
-        print("No se encuentra o no se permite abrir el archivo.")
     
-main() 
+main()
