@@ -1,4 +1,4 @@
-from pila import Cola
+from cola import Cola
 
 from pila import Pila
 
@@ -6,43 +6,42 @@ import argparse
 
 LIMITE_DE_BYTE = 256
 
-def abc(pila, cola):
+def obt_pos_barras(cadena):
 
-    cola_aux = Cola()
+    '''Recibe en forma de cadena el codigo fuente
+       de un programa/funcion en lenguaje SCEQL y
+       devuelve dos diccionarios. Uno con la posicion
+       de la "\" como clave y la posicion de "/" 
+       correspondiente como valor y el otro inverso.'''
 
-    pila_aux = Pila()
-
-    '''while not pila.esta_vacia() :
-
-        a = pila.desapilar()
-
-        print(a," ",end="")
-
-        print()
-
-        pila_aux.apilar(a)
-
-    while not pila_aux.esta_vacia() :
-
-        a = pila_aux.desapilar()
-
-        pila.apilar(a)'''
-
-    while not cola.esta_vacia() :
-
-        a = cola.desencolar()
-
-        print(a," ",end="-")
-
-        cola_aux.encolar(a)
+    camino_1 = {}
     
-    print()
+    camino_2 = {}
+    
+    barras = Pila()
+    
+    for i in range(len(cadena)):
+        
+        caracter = cadena[i]
+    
+        if caracter == "\\":
 
-    while not cola_aux.esta_vacia() :
+            barras.apilar(i)
 
-        a = cola_aux.desencolar()
+        elif caracter == "/":
 
-        cola.encolar(a)
+            ultima_barra = barras.desapilar()
+            
+            camino_1[ultima_barra] = i
+            
+            camino_2[i] = ultima_barra
+
+    if not barras.esta_vacia():
+
+        raise ValueError()
+    
+    return camino_1, camino_2
+            
 
 
 def debug(cadena, i, mensaje):
@@ -66,9 +65,13 @@ def debug(cadena, i, mensaje):
 
 def ejecutar(cadena, modo_debug):
 
+    '''Recibe en forma de cadena el codigo fuente
+       de un programa/funcion en lenguaje SCEQL y
+       lo interpreta.'''
+
     mensaje = ""
 
-    pila = Pila()
+    camino_1, camino_2 = obt_pos_barras(cadena)
 
     cola = Cola()
 
@@ -76,55 +79,48 @@ def ejecutar(cadena, modo_debug):
 
     mensaje = ""
 
-    funciones = {"\\" : a, "/" : a ,"!" : b, "=" : b, "-" : c , "_" : c, "*" : d}
+    funciones = {"\\" : _barras, "/" : _barras ,"!" : _igual_admiracion, "=" : _igual_admiracion, "-" : _guiones , "_" : _guiones, "*" : _asterisco}
 
     i = 0
 
-    while i < len(cadena) :
-
-        elemento = cadena[i]
+    while i < len(cadena):
 
         if modo_debug:
             
             debug(cadena, i, mensaje)
 
-        if not elemento in funciones:
-
-            continue
-
-        i, mensaje = funciones[elemento](elemento, i, cola, pila, mensaje)
-
-def a(elemento, i, cola, pila, mensaje):
-
-    pila_aux = Pila()
-
-    if elemento == "/":
-
-        anterior = i 
-
-        if not pila.esta_vacia() :
-
-            if pila.ver_tope() == i :
-
-                pila.desapilar()
-
-        i = pila.desapilar()
-
-        pila.apilar(anterior)
-
-    else :
-
-        if cola.ver_primero() == 0 :
-
-            i = pila.desapilar() + 1
-
-        else:
+        if not cadena[i] in funciones:
 
             i += 1
 
-    return i, mensaje
+            continue
 
-def b(elemento, i, cola, pila, mensaje):
+        i, mensaje = funciones[cadena[i]](cadena[i], i, cola ,camino_1 , camino_2 , mensaje)
+
+def _barras(elemento, i, cola, camino_1, camino_2 , mensaje):
+
+    '''Recibe un elemento, una posicion, una cola,
+    dos diccionarios y un mensaje.
+    dependiendo de las condiciones de la cola, modifica
+    la posiciom
+    '''
+
+    if elemento == "\\":
+
+        if cola.ver_primero() == 0 :
+
+            return camino_1[i] +1, mensaje
+
+        return i + 1, mensaje
+
+    return camino_2[i], mensaje
+
+def _igual_admiracion(elemento, i, cola, camino_1, camino_2 , mensaje):
+
+    '''Recibe un elemento, una posicion, una cola,
+    dos diccionarios y un mensaje.
+    Dependiendo del elemento, modifica la cola
+    '''
 
     if elemento == "!" : 
 
@@ -138,7 +134,12 @@ def b(elemento, i, cola, pila, mensaje):
 
     return i + 1, mensaje
 
-def c(elemento, i, cola, pila, mensaje):
+def _guiones(elemento, i, cola, camino_1, camino_2 , mensaje):
+
+    '''Recibe un elemento, una posicion, una cola,
+    dos diccionarios y un mensaje.
+    deependiendo del elemento, modifica la cola
+    '''
 
     dato = cola.ver_primero()
 
@@ -150,8 +151,14 @@ def c(elemento, i, cola, pila, mensaje):
 
     return i + 1, mensaje
 
-def d(elemento, i, cola, pila, mensaje):
+def _asterisco(elemento, i, cola, camino_1, camino_2 , mensaje):
     
+    '''Recibe un elemento, una posicion, una cola,
+    dos diccionarios y un mensaje.
+    Imprime en pantalla el primer elemento de la cola
+    paso usando la tabla ASCII
+    '''
+
     dato = cola.desencolar()
 
     letra = chr(dato)
@@ -206,5 +213,13 @@ def main():
     except IOError:
 
         print("No se encuentra o no se permite abrir el archivo.")
+
+    except ValueError:
+
+        print("Error. Deben haber igual cantidad de '\\' que '/'.")
+
+    except IndexError:
+
+        print("Error. Deben haber igual cantidad de '\\' que '/'.")
     
 main()
