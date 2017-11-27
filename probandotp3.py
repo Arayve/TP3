@@ -52,8 +52,9 @@ def debug(cadena, i, mensaje,cola):
        en el caracter a evaluar'''
 
     print()
-    
+
     cola.imprimir_cola()
+    
     print(mensaje)
 
     rango = (i // 100)  * 100
