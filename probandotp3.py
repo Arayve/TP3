@@ -1,4 +1,4 @@
-from Comandos import dic_funciones
+from Comandos import DIC_FUNCIONES
 
 from cola import Cola
 
@@ -45,7 +45,6 @@ def obt_pos_barras(cadena):
     return camino_1, camino_2
             
 
-
 def debug(cadena, i, mensaje,cola):
     '''Recibe la cadena y el indice a evaluar.
        Imprime en pantalla un rango de 100 
@@ -53,7 +52,7 @@ def debug(cadena, i, mensaje,cola):
        en el caracter a evaluar'''
 
     print()
-
+    
     cola.imprimir_cola()
     print(mensaje)
 
@@ -90,13 +89,13 @@ def ejecutar(cadena, modo_debug):
             
             debug(cadena, i, mensaje,cola)
 
-        if not cadena[i] in dic_funciones:
+        if not cadena[i] in DIC_FUNCIONES:
 
             i += 1
 
             continue
 
-        i, mensaje = dic_funciones[cadena[i]](cadena[i], i, cola ,camino_1 , camino_2 , mensaje)
+        i, mensaje = DIC_FUNCIONES[cadena[i]](cadena[i], i, cola ,camino_1 , camino_2 , mensaje)
 
 
 def main():

@@ -76,4 +76,4 @@ def _asterisco(elemento, i, cola, camino_1, camino_2 , mensaje):
     return i + 1, mensaje
 
 
-dic_funciones = {"\\" : _barras, "/" : _barras ,"!" : _igual_admiracion, "=" : _igual_admiracion, "-" : _guiones , "_" : _guiones, "*" : _asterisco}
+DIC_FUNCIONES = {"\\" : _barras, "/" : _barras ,"!" : _igual_admiracion, "=" : _igual_admiracion, "-" : _guiones , "_" : _guiones, "*" : _asterisco}

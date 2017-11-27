@@ -88,7 +88,9 @@ class Cola:
         self.prim.dato = valor
 
     def imprimir_cola(self):
-        resultado=[]
+
+        """Imprime todo el contenido de la cola"""
+        resultado=[]#Esto es por que el profesor en modo debug la cola lo imprimia en una lista , por eso imprimo una lista.
         actual=self.prim
         while not actual is None:
             resultado.append(actual.dato)
